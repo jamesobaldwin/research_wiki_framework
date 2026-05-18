@@ -46,7 +46,7 @@ This is the scaffolding. The content is mine, and it lives in a separate private
 1. **Clone this repo into a new Obsidian vault**, or copy its contents into an existing vault.
 
    ```bash
-   git clone https://github.com/<your-handle>/research_wiki_framework.git my_research_wiki
+   git clone https://github.com/jamesobaldwin/research_wiki_framework.git my_research_wiki
    cd my_research_wiki
    ```
 
