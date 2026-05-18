@@ -24,6 +24,7 @@ publication: {{yaml_publication}}
 doi: {{yaml_doi}}
 url: {{yaml_url}}
 pdf: "[[{{pdf_path}}]]"
+status: queued 
 tags:
   - paper
 ---
