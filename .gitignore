@@ -68,3 +68,9 @@ LITERATURENOTES.md
 REFERENCENOTES.md
 CONCEPTS.md
 DATASETS.md
+
+# Obsidian per-vault UI state
+.obsidian/app.json
+.obsidian/appearance.json
+.obsidian/community-plugins.json
+.obsidian/core-plugins.json
