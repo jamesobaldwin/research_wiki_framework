@@ -79,6 +79,36 @@ This is the scaffolding. The content is mine, and it lives in a separate private
    scripts/.venv/bin/python scripts/ingest.py --citekey <your-citekey>
    ```
 
+## Talking to the agent
+
+Once the vault is set up, you interact with it by typing prompts in Claude Code. These are the most common ones:
+
+**Paper ingest**
+
+| Prompt | What it does |
+|---|---|
+| `Process <your-citekey>` | Ingest one paper: reads the PDF from `Assets/`, generates a full literature note, creates supporting concept and glossary pages, updates master tables. |
+| `Process all queued papers` | Work through every literature note whose `status` is `queued`, one at a time. |
+| `Batch process all queued papers` | Same, but uses the `--queued` script flag — faster because the prompt cache is warm across all papers in the batch. |
+| `Process the clipping <filename>` | Ingest a web article dropped in `Clippings/` (no PDF; Claude reads the markdown directly). |
+
+**Search and retrieval**
+
+| Prompt | What it does |
+|---|---|
+| `Ask the wiki-librarian about <topic>` | Delegates to the `wiki-librarian` subagent: hybrid citekey + semantic search, returns matching notes with verification against master tables. |
+| `What does the wiki say about <concept>?` | Equivalent free-form query to the librarian. |
+| `Find all papers tagged <tag>` | Librarian looks up the master tables for matching frontmatter tags. |
+
+**Maintenance**
+
+| Prompt | What it does |
+|---|---|
+| `Lint the wiki` | Delegates to the `wiki-linter` subagent: checks for orphan pages, missing `source_type`, broken wiki-links, unpaged terms, stale questions, and other structural issues. |
+| `Add <paper title> to my reading list` | Appends a card to the TBR column in `Reading.md`. |
+| `Create a concept page for <topic>` | Drafts a new Concept-tier page (proposes it first, outside of an ingest workflow). |
+| `What's in the ingest queue?` | Lists all literature notes with `status: queued` from `LITERATURENOTES.md`. |
+
 ## Status
 
 Personal project, not a polished product. No guaranteed support. Used by exactly one person (me) on one machine, so things that aren't important to me are unlikely to work — Windows paths, multi-vault setups, alternative LLM providers, etc.
