@@ -1,0 +1,107 @@
+% LLM Wiki MathJax preamble
+% Loaded by the Extended MathJax plugin from the vault root.
+% After editing, reload Obsidian (Cmd/Ctrl+R or "Reload app without saving") to pick up changes.
+%
+% Convention: compound macro names use no underscores. \LambdaCDM, not \Lambda_CDM.
+% The macro definition handles the underscoring of the rendered output.
+
+
+% ==========================================================
+% General math
+% ==========================================================
+
+\newcommand{\dd}{\mathrm{d}}                         % differential (e.g. \int f(x) \dd x)
+\newcommand{\Tr}{\mathrm{Tr}}                        % trace
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\eqdef}{\mathrel{:=}}                    % := (defined as)
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+
+
+% ==========================================================
+% Number sets
+% ==========================================================
+
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Naturals}{\mathbb{N}}
+\newcommand{\Integers}{\mathbb{Z}}
+\newcommand{\Complex}{\mathbb{C}}
+
+
+% ==========================================================
+% Statistics / ML
+% ==========================================================
+
+\newcommand{\E}{\mathbb{E}}                          % expectation
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\ELBO}{\mathrm{ELBO}}
+\newcommand{\Gauss}{\mathcal{N}}                     % Gaussian / normal distribution
+\newcommand{\Loss}{\mathcal{L}}
+\newcommand{\Data}{\mathcal{D}}
+\newcommand{\Model}{\mathcal{M}}
+\newcommand{\given}{\,|\,}                           % conditional bar with thin spaces
+\newcommand{\score}{\nabla \log p}                   % score function (for diffusion / score matching)
+
+
+% ==========================================================
+% Cosmology -- model
+% ==========================================================
+
+\newcommand{\LambdaCDM}{\Lambda\mathrm{CDM}}
+\newcommand{\Hzero}{H_0}
+\newcommand{\Mpc}{\,\mathrm{Mpc}}                    % includes the thin space; write `100\Mpc`
+\newcommand{\hMpc}{\,h^{-1}\,\mathrm{Mpc}}
+
+
+% ==========================================================
+% Cosmology -- density parameters
+% ==========================================================
+
+\newcommand{\OmegaM}{\Omega_\mathrm{m}}              % matter
+\newcommand{\OmegaL}{\Omega_\Lambda}                 % dark energy (cosmological constant)
+\newcommand{\OmegaB}{\Omega_\mathrm{b}}              % baryons
+\newcommand{\OmegaC}{\Omega_\mathrm{c}}              % cold dark matter
+\newcommand{\OmegaR}{\Omega_\mathrm{r}}              % radiation
+\newcommand{\OmegaK}{\Omega_K}                       % curvature
+\newcommand{\OmegaNu}{\Omega_\nu}                    % neutrinos
+
+
+% ==========================================================
+% Cosmology -- CMB
+% ==========================================================
+
+\newcommand{\TCMB}{T_\mathrm{CMB}}
+\newcommand{\Cl}{C_\ell}                             % angular power spectrum
+\newcommand{\Dl}{\mathcal{D}_\ell}                   % D_l = l(l+1) C_l / 2π
+
+
+% ==========================================================
+% Cosmology -- LSS / power spectrum
+% ==========================================================
+
+\newcommand{\Pk}{P(k)}                               % matter power spectrum
+\newcommand{\Pkz}{P(k, z)}
+\newcommand{\sigmaeight}{\sigma_8}
+
+
+% ==========================================================
+% Cosmology -- inflation / primordial
+% ==========================================================
+
+\newcommand{\ns}{n_\mathrm{s}}                       % scalar spectral index
+\newcommand{\As}{A_\mathrm{s}}                       % primordial amplitude
+\newcommand{\fNL}{f_\mathrm{NL}}                     % non-Gaussianity
+
+
+% ==========================================================
+% Cosmology -- other
+% ==========================================================
+
+\newcommand{\Neff}{N_\mathrm{eff}}                   % effective neutrino species
+\newcommand{\Mnu}{\sum m_\nu}                        % sum of neutrino masses
+\newcommand{\zreion}{z_\mathrm{re}}                  % reionization redshift

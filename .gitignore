@@ -1,0 +1,70 @@
+# OS / editor noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python
+scripts/.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Obsidian — workspace state and internal caches
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/vault-search/
+
+# Retrieval indexes (regenerable, large)
+.obsidian-hybrid-search.db
+.obsidian-hybrid-search.db-shm
+.obsidian-hybrid-search.db-wal
+.smart-env/
+
+# Third-party Obsidian plugins (install via community-plugin UI)
+.obsidian/plugins/*/
+!.obsidian/plugins/zotero_lit_wiki/
+
+# Plugin local state and old backups
+.obsidian/plugins/zotero_lit_wiki/data.json
+.obsidian/plugins/zotero_lit_wiki/main_old.js
+
+# Claude Code intermediate output and local config
+.claude/scratch/
+.claude/profiles/
+.claude/settings.local.json
+
+# Backups
+*.bak
+
+# --- Defensive: this is a framework, not a wiki ------------------------
+# If someone clones this repo and starts taking notes, don't track them.
+
+LiteratureNotes/*
+!LiteratureNotes/.gitkeep
+ReferenceNotes/*
+!ReferenceNotes/.gitkeep
+Concepts/*
+!Concepts/.gitkeep
+Glossary/*
+!Glossary/.gitkeep
+Datasets/*
+!Datasets/.gitkeep
+Projects/*
+!Projects/.gitkeep
+Questions/*
+!Questions/.gitkeep
+Clippings/*
+!Clippings/.gitkeep
+Assets/*
+!Assets/.gitkeep
+
+# User-maintained logs, indexes, primary tables
+log.md
+index.md
+Reading.md
+LITERATURENOTES.md
+REFERENCENOTES.md
+CONCEPTS.md
+DATASETS.md
