@@ -7,7 +7,7 @@ This repository is the **scaffolding** — schemas, workflows, scripts, Claude i
 ## Why
 
 - **LLM as first reader.** Papers get read by Claude before they get read by you. The wiki is the artifact of that first pass — structured, dense in cross-links, and good enough to skim before you commit to a deep read.
-- **Master tables as source of truth.** Every literature note, reference note, concept page, and dataset page has exactly one row in a primary table (`LITERATURENOTES.md`, `REFERENCENOTES.md`, `CONCEPTS.md`, `DATASETS.md`). Citekey lookups and tier decisions resolve there, not by scanning the filesystem.
+- **Primary tables as source of truth.** Every literature note, reference note, concept page, and dataset page has exactly one row in a primary table (`LITERATURENOTES.md`, `REFERENCENOTES.md`, `CONCEPTS.md`, `DATASETS.md`). Citekey lookups and tier decisions resolve there, not by scanning the filesystem.
 - **Hybrid retrieval.** Citekey queries route to `rg`; conceptual queries route to Smart Connections (embeddings) or `obsidian-hybrid-search` (BM25 + embeddings via MCP). The two retrieval modes are documented in `wiki-meta/retrieval.md` and benchmarked in `wiki-meta/retrieval-benchmark.md`.
 - **Cost engineering.** Paper ingest uses Anthropic prompt caching with a fixed instruction prefix, so the per-paper cost is dominated by the PDF itself (typically <$0.50 for a 30-page paper). Batched runs reuse the cache across papers.
 - **Typed note schemas.** Literature notes, reference notes (cited for datasets/infrastructure only), concept pages, glossary entries, dataset pages, projects, and questions each have a fixed frontmatter schema and required body sections — Claude's job is to fill them, not invent new shapes.
