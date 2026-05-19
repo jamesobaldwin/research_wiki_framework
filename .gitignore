@@ -16,6 +16,9 @@ __pycache__/
 .obsidian/workspace-mobile.json
 .obsidian/vault-search/
 
+# Obsidian - graph state
+.obsidian/graph.json 
+
 # Retrieval indexes (regenerable, large)
 .obsidian-hybrid-search.db
 .obsidian-hybrid-search.db-shm

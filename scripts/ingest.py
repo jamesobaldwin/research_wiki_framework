@@ -903,6 +903,7 @@ def _apply_paper_result(
     structured: dict,
     deep: bool,
     dry_run: bool,
+    no_reading_board: bool = False,
 ) -> dict[str, Any]:
     """Write note + all master-file updates from a parsed API response. Used by both
     the synchronous path and the batch result-processing path."""
@@ -931,7 +932,8 @@ def _apply_paper_result(
         structured.get("literaturenotes_concepts", []),
         is_clipping=False, dry_run=dry_run,
     )
-    update_reading_md(vault_root, citekey, authors, year, deep=deep, dry_run=dry_run)
+    if not no_reading_board:
+        update_reading_md(vault_root, citekey, authors, year, deep=deep, dry_run=dry_run)
     prepend_log_entry(vault_root, citekey, "zotero", authors, year, new_page_paths, dry_run)
     update_index_md(vault_root, structured.get("index_entries", []), dry_run)
     update_master_table(vault_root, "CONCEPTS.md", structured.get("concepts_rows", []), dry_run)
@@ -990,6 +992,7 @@ def process_paper(
     deep: bool,
     dry_run: bool,
     debug: bool = False,
+    no_reading_board: bool = False,
 ) -> dict[str, Any]:
     """Process a single Zotero paper. Returns a result summary dict."""
     note_path = vault_root / "LiteratureNotes" / f"{citekey}.md"
@@ -1034,6 +1037,7 @@ def process_paper(
         structured=parsed.get("structured", {}),
         deep=deep,
         dry_run=dry_run,
+        no_reading_board=no_reading_board,
     )
     usage = response.usage
     r["cost_usd"] = compute_cost(usage, model)
@@ -1122,6 +1126,7 @@ def process_clipping(
     deep: bool,
     dry_run: bool,
     debug: bool = False,
+    no_reading_board: bool = False,
 ) -> dict[str, Any]:
     """Process a single Chrome-clipped article. Returns a result summary dict."""
     clipping_path = vault_root / "Clippings" / clipping_filename
@@ -1209,7 +1214,8 @@ def process_clipping(
         s.get("literaturenotes_concepts", []),
         is_clipping=True, dry_run=dry_run,
     )
-    update_reading_md(vault_root, slug, raw_authors, year, deep=deep, dry_run=dry_run)
+    if not no_reading_board:
+        update_reading_md(vault_root, slug, raw_authors, year, deep=deep, dry_run=dry_run)
     prepend_log_entry(vault_root, slug, "clipping", raw_authors, year, new_page_paths, dry_run)
     update_index_md(vault_root, s.get("index_entries", []), dry_run)
     update_master_table(vault_root, "CONCEPTS.md", s.get("concepts_rows", []), dry_run)
@@ -1298,6 +1304,7 @@ def process_batch_results(
     deep: bool,
     dry_run: bool,
     source_type_map: dict[str, str] | None = None,
+    no_reading_board: bool = False,
 ) -> list[dict[str, Any]]:
     """Iterate batch results and write notes + master files for each succeeded request.
     Per-request errors are collected and reported rather than aborting the run.
@@ -1367,6 +1374,7 @@ def process_batch_results(
                 structured=parsed.get("structured", {}),
                 deep=deep,
                 dry_run=dry_run,
+                no_reading_board=no_reading_board,
             )
         r["batch"] = True
         r["cost_usd"] = compute_cost(usage, model, batch=True)
@@ -1393,6 +1401,7 @@ def run_batch(
     poll_interval: int,
     timeout: int,
     debug: bool,
+    no_reading_board: bool = False,
 ) -> list[dict[str, Any]]:
     """Build, submit, poll, and process a batch of queued papers and/or reference notes.
     items: list of {citekey, source_type}. prefixes: {source_type: workflow_prefix_text}."""
@@ -1478,6 +1487,7 @@ def run_batch(
         deep=deep,
         dry_run=False,
         source_type_map=source_type_map,
+        no_reading_board=no_reading_board,
     )
 
 
@@ -1578,6 +1588,7 @@ def main() -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"Model override (default: {DEFAULT_MODEL}).")
     parser.add_argument("--dry-run", action="store_true", help="Show what would happen; no writes, no API calls.")
     parser.add_argument("--deep", action="store_true", help="Mark Reading.md card as TBDR instead of TBR.")
+    parser.add_argument("--no-reading-board", action="store_true", dest="no_reading_board", help="Skip appending a card to Reading.md (e.g. for already-read papers).")
     parser.add_argument("--debug", action="store_true", help="Print the API request structure (data truncated) before sending.")
     parser.add_argument("--batch", action="store_true", help="Submit via Batch API (50%% discount) instead of synchronous.")
     parser.add_argument(
@@ -1624,6 +1635,7 @@ def main() -> None:
             model=args.model,
             deep=args.deep,
             dry_run=args.dry_run,
+            no_reading_board=args.no_reading_board,
             # source_type_map absent: each citekey detected from file system
         )
         print_summary(results)
@@ -1689,7 +1701,7 @@ def main() -> None:
                 client=client, model=args.model, prefixes=prefixes,
                 wiki_context=wiki_ctx, deep=args.deep, dry_run=args.dry_run,
                 poll_interval=args.batch_poll_interval, timeout=args.batch_timeout,
-                debug=args.debug,
+                debug=args.debug, no_reading_board=args.no_reading_board,
             )
         elif source_type == "reference":
             print(f"\nProcessing [reference]: {args.citekey}")
@@ -1704,6 +1716,7 @@ def main() -> None:
                 vault_root=vault_root, citekey=args.citekey, client=client,
                 model=args.model, workflow_prefix=item_prefix, wiki_context=wiki_ctx,
                 deep=args.deep, dry_run=args.dry_run, debug=args.debug,
+                no_reading_board=args.no_reading_board,
             ))
 
     elif args.reference:
@@ -1716,7 +1729,7 @@ def main() -> None:
                 client=client, model=args.model, prefixes=prefixes,
                 wiki_context=wiki_ctx, deep=args.deep, dry_run=args.dry_run,
                 poll_interval=args.batch_poll_interval, timeout=args.batch_timeout,
-                debug=args.debug,
+                debug=args.debug, no_reading_board=args.no_reading_board,
             )
         else:
             results.append(process_reference_paper(
@@ -1736,7 +1749,7 @@ def main() -> None:
                 client=client, model=args.model, prefixes=prefixes,
                 wiki_context=wiki_ctx, deep=args.deep, dry_run=args.dry_run,
                 poll_interval=args.batch_poll_interval, timeout=args.batch_timeout,
-                debug=args.debug,
+                debug=args.debug, no_reading_board=args.no_reading_board,
             )
         else:
             for i, item in enumerate(all_items, 1):
@@ -1756,6 +1769,7 @@ def main() -> None:
                         vault_root=vault_root, citekey=ck, client=client,
                         model=args.model, workflow_prefix=item_prefix, wiki_context=wiki_ctx,
                         deep=args.deep, dry_run=args.dry_run, debug=args.debug,
+                        no_reading_board=args.no_reading_board,
                     ))
 
     elif args.clipping:
@@ -1764,6 +1778,7 @@ def main() -> None:
             vault_root=vault_root, clipping_filename=args.clipping, client=client,
             model=args.model, workflow_prefix=prefixes["clipping"], wiki_context=wiki_ctx,
             deep=args.deep, dry_run=args.dry_run, debug=args.debug,
+            no_reading_board=args.no_reading_board,
         ))
 
     print_summary(results)
